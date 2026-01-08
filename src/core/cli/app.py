@@ -1,10 +1,13 @@
 """ragctl CLI Application (Typer-based)."""
+import logging
 import warnings
 import typer
 from pathlib import Path
 from typing import Optional
 from typing_extensions import Annotated
+from src.core.cli.utils.display import set_verbosity
 from src.core.cli.commands.chunk import ChunkStrategy
+
 
 # Suppress common warnings for better UX
 warnings.filterwarnings("ignore", category=FutureWarning, module="transformers")
@@ -46,12 +49,27 @@ def main(
     version: Annotated[
         bool,
         typer.Option(
-            "--version", "-v",
+            "--version", "-V",
             help="Show version and exit",
             callback=version_callback,
             is_eager=True
         )
     ] = False,
+    quiet: Annotated[
+        bool,
+        typer.Option(
+            "--quiet", "-q",
+            help="Quiet mode: errors only"
+        )
+    ] = False,
+    verbose: Annotated[
+        int,
+        typer.Option(
+            "--verbose", "-v",
+            help="Increase verbosity (-v for info/debug, -vv for full details)",
+            count=True
+        )
+    ] = 0,
 ):
     """
     RAG Studio - Production-ready RAG toolkit with intelligent document processing.
@@ -85,7 +103,19 @@ def main(
     Support:
         Report issues at: https://github.com/datallmhub/ragctl/issues
     """
-    pass
+    if quiet and verbose > 0:
+        raise typer.BadParameter("Cannot use --quiet with --verbose/--vv")
+
+    logging_level = logging.WARNING
+    if quiet:
+        logging_level = logging.ERROR
+    elif verbose >= 2:
+        logging_level = logging.DEBUG
+    elif verbose == 1:
+        logging_level = logging.INFO
+
+    logging.basicConfig(level=logging_level, force=True)
+    set_verbosity(level=verbose, quiet=quiet)
 
 
 # Register commands - imports happen inside each command function (lazy loading)
