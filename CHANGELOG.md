@@ -5,6 +5,29 @@ All notable changes to ragctl will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2026-01-08
+
+### Added
+- Dry-run mode for batch command to preview files before processing
+- Global quiet and verbose flags for better control over output
+- Support for `-q/--quiet` flag to suppress non-error messages
+- Support for `-v/--verbose` and `-vv` flags for debug output
+- Tests for verbosity flags functionality
+- Improved documentation with examples for dry-run and verbosity features
+
+### Changed
+- Version flag changed from `-v` to `-V` to avoid conflict with verbose flag
+
+### Contributors
+- @SoulSniper-V2 - Dry-run implementation
+- @cnaples79 - Verbosity flags implementation
+
+## [0.1.4] - 2026-01-05
+
+### Changed
+- Updated repository URLs from ragstudio to ragctl
+- Improved documentation and examples
+
 ## [0.1.3] - 2025-10-30
 
 ### ✅ Testing & Quality Improvements

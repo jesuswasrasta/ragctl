@@ -4,7 +4,7 @@
 
 Process documents, extract text with advanced OCR, chunk intelligently, and prepare data for RAG systems - all from the command line with `ragctl`.
 
-[![Version](https://img.shields.io/badge/version-0.1.4-blue.svg)](https://github.com/datallmhub/ragctl)
+[![Version](https://img.shields.io/badge/version-0.1.5-blue.svg)](https://github.com/datallmhub/ragctl)
 [![PyPI](https://img.shields.io/badge/pypi-ragctl-blue.svg)](https://pypi.org/project/ragctl/)
 [![Status](https://img.shields.io/badge/status-beta-yellow.svg)](https://github.com/datallmhub/ragctl)
 [![Tests](https://img.shields.io/badge/tests-496%20passed-success.svg)](https://github.com/datallmhub/ragctl)
@@ -411,4 +411,4 @@ Built with:
 
 ---
 
-**Version**: 0.1.4 | **Status**: Beta | **License**: MIT
+**Version**: 0.1.5 | **Status**: Beta | **License**: MIT
