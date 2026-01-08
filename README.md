@@ -112,8 +112,17 @@ ragctl chunk scanned.pdf --advanced-ocr -o chunks.json
 # Batch process a folder
 ragctl batch ./documents --output ./chunks/
 
+# Preview files before processing (dry-run)
+ragctl batch ./documents --dry-run
+
 # Batch with auto-retry for CI/CD
 ragctl batch ./documents --output ./chunks/ --auto-continue
+
+# Quiet mode (errors only)
+ragctl batch ./documents -q
+
+# Verbose mode (debug info)
+ragctl chunk document.pdf -v
 ```
 
 ---
@@ -146,17 +155,30 @@ ragctl chunk document.pdf \
 # Process all files in a directory
 ragctl batch ./documents --output ./chunks/
 
+# Preview files without processing (dry-run)
+ragctl batch ./documents --dry-run
+# Output:
+# Would process 15 files:
+#   ├── report.pdf (2.3 MB)
+#   ├── contract.docx (156 KB)
+#   └── notes.txt (12 KB)
+# Total: 15 files, 45.2 MB
+
 # Process only PDFs recursively
 ragctl batch ./documents \
   --pattern "*.pdf" \
   --recursive \
   --output ./chunks/
 
-# CI/CD mode - continue on errors
+# CI/CD mode - continue on errors (quiet mode)
 ragctl batch ./documents \
   --output ./chunks/ \
   --auto-continue \
+  --quiet \
   --save-history
+
+# Verbose mode for debugging
+ragctl batch ./documents -v --output ./chunks/
 
 # Per-file output (default):
 # chunks/
