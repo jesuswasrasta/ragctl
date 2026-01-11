@@ -219,15 +219,46 @@ def ingest(
     )
 
 
-@app.command(name="search", help="Search in vector store using semantic search", hidden=True)
+@app.command(name="search", help="Search in vector store using semantic search")
 def search(
     query: str = typer.Argument(..., help="Search query"),
-    collection: str = typer.Option("documents", "--collection", "-c", help="Collection name"),
-    limit: int = typer.Option(5, "--limit", "-l", help="Number of results"),
+    collection: str = typer.Option("atlas_chunks", "--collection", "-c", help="Collection name"),
+    top_k: int = typer.Option(5, "--top-k", "-k", help="Number of results"),
+    threshold: Optional[float] = typer.Option(None, "--threshold", "-t", help="Minimum similarity score threshold (0.0-1.0)"),
+    qdrant_url: str = typer.Option("http://localhost:6333", "--qdrant-url", help="Qdrant server URL"),
+    json_output: bool = typer.Option(False, "--json-output", "-j", help="Output results in JSON format"),
 ):
     """Search in vector store using semantic search."""
     from src.core.cli.commands.search import search_command
-    return search_command(query, collection, limit)
+    return search_command(
+        query=query,
+        collection=collection,
+        top_k=top_k,
+        threshold=threshold,
+        qdrant_url=qdrant_url,
+        json_output=json_output
+    )
+
+
+@app.command(name="retrieve", help="Alias for 'search'", hidden=True)
+def retrieve(
+    query: str = typer.Argument(..., help="Search query"),
+    collection: str = typer.Option("atlas_chunks", "--collection", "-c", help="Collection name"),
+    top_k: int = typer.Option(5, "--top-k", "-k", help="Number of results"),
+    threshold: Optional[float] = typer.Option(None, "--threshold", "-t", help="Minimum similarity score threshold (0.0-1.0)"),
+    qdrant_url: str = typer.Option("http://localhost:6333", "--qdrant-url", help="Qdrant server URL"),
+    json_output: bool = typer.Option(False, "--json-output", "-j", help="Output results in JSON format"),
+):
+    """Alias for 'search' command."""
+    from src.core.cli.commands.search import search_command
+    return search_command(
+        query=query,
+        collection=collection,
+        top_k=top_k,
+        threshold=threshold,
+        qdrant_url=qdrant_url,
+        json_output=json_output
+    )
 
 
 @app.command(name="eval", help="Evaluate chunking quality and compare strategies")
