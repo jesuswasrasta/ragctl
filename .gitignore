@@ -158,18 +158,53 @@ $RECYCLE.BIN/
 # IDE / EDITORS
 # ============================================================================
 
-# PyCharm
+# PyCharm / IntelliJ
 .idea/
+*.iml
+*.iws
+out/
 
 # VSCode
 .vscode/
 *.code-workspace
 .history/
+.ionide/
 
-# Other
-*.swp
-*.swo
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw?
+[._]*.un~
+Session.vim
+.netrwhist
+
+# Emacs
 *~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list/
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# Eclipse / PyDev
+.project
+.pydevproject
+.settings/
 
 # ============================================================================
 # RAGCTL SPECIFIC
