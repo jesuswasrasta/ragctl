@@ -26,25 +26,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
+        run: uv python install 3.11
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install pytest pytest-cov bandit safety
-          pip install -e .
+        run: uv sync --extra dev
 
       - name: Run tests
-        run: pytest tests/ -v --cov=src
+        run: uv run pytest tests/ -v --cov=src
 
       - name: Security scan
         run: |
-          bandit -r src/ -f json -o bandit-report.json
-          safety check --json
+          uv run bandit -r src/ -f json -o bandit-report.json
+          uv run safety check --json
         continue-on-error: true
 
       - name: Trivy vulnerability scan
@@ -64,22 +61,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        run: uv python install 3.11
 
       - name: Install build tools
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install build twine
+        run: uv sync --extra dev
 
       - name: Build package
-        run: python -m build
+        run: uv run python -m build
 
       - name: Verify package
         run: |
-          twine check dist/*
+          uv run twine check dist/*
           ls -lh dist/
 
       - name: Upload artifacts

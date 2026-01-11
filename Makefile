@@ -31,39 +31,39 @@ help:
 
 # Development
 install-dev:
-	poetry install --with dev
+	uv sync --extra dev
 
 test:
-	pytest tests/ -v --cov=src --cov-report=html
+	uv run pytest tests/ -v --cov=src --cov-report=html
 
 test-cli:
 	@echo "🧪 Running CLI pytest tests..."
-	pytest tests/cli/ -v --no-cov
+	uv run pytest tests/cli/ -v --no-cov
 	@echo "✅ CLI tests passed!"
 
 test-cli-e2e:
 	@echo "🎯 Running comprehensive CLI E2E tests..."
-	@bash tests/cli_e2e_test.sh
+	@uv run bash tests/cli_e2e_test.sh
 	@echo "✅ CLI E2E tests complete!"
 
 test-cli-quick:
 	@echo "⚡ Running quick CLI validation..."
 	@echo "Testing core commands..."
-	@ragctl --version
-	@ragctl --help > /dev/null
-	@ragctl chunk --help > /dev/null
-	@ragctl batch --help > /dev/null
-	@ragctl ingest --help > /dev/null
-	@ragctl eval --help > /dev/null
+	@uv run ragctl --version
+	@uv run ragctl --help > /dev/null
+	@uv run ragctl chunk --help > /dev/null
+	@uv run ragctl batch --help > /dev/null
+	@uv run ragctl ingest --help > /dev/null
+	@uv run ragctl eval --help > /dev/null
 	@echo "✅ Quick validation passed!"
 
 lint:
-	poetry run ruff check src/ tests/
-	poetry run mypy src/
+	uv run ruff check src/ tests/
+	uv run mypy src/
 
 format:
-	poetry run black src/ tests/
-	poetry run isort src/ tests/
+	uv run black src/ tests/
+	uv run isort src/ tests/
 
 # Quality Assurance
 pre-commit-install:
@@ -79,20 +79,20 @@ pre-commit:
 # CI/CD targets
 ci-lint:
 	@echo "🔍 Running CI linting checks..."
-	black --check src/ tests/
-	isort --check-only src/ tests/
-	flake8 src/ tests/
+	uv run black --check src/ tests/
+	uv run isort --check-only src/ tests/
+	uv run flake8 src/ tests/
 	@echo "✅ Linting checks passed!"
 
 ci-test:
 	@echo "🧪 Running CI tests..."
-	pytest tests/ --cov=src --cov-report=xml --cov-report=html --cov-report=term-missing -v
+	uv run pytest tests/ --cov=src --cov-report=xml --cov-report=html --cov-report=term-missing -v
 	@echo "✅ Tests passed!"
 
 ci-security:
 	@echo "🔒 Running security checks..."
-	safety check || true
-	bandit -r src/ -f json -o bandit-report.json || true
+	uv run safety check || true
+	uv run bandit -r src/ -f json -o bandit-report.json || true
 	@echo "✅ Security checks complete!"
 
 ci-all: ci-lint ci-test ci-security

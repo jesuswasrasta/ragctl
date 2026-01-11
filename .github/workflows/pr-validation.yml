@@ -13,28 +13,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
+        run: uv python install 3.11
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install ruff black flake8 mypy
-          pip install -e .
+        run: uv sync --extra dev
 
       - name: Run Ruff
-        run: ruff check src/
+        run: uv run ruff check src/
         continue-on-error: true
 
       - name: Run Black (check only)
-        run: black --check src/
+        run: uv run black --check src/
         continue-on-error: true
 
       - name: Run Flake8
-        run: flake8 src/ --max-line-length=120 --extend-ignore=E203,W503
+        run: uv run flake8 src/ --max-line-length=120 --extend-ignore=E203,W503
         continue-on-error: true
 
   test:
@@ -48,11 +45,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: 'pip'
+        run: uv python install ${{ matrix.python-version }}
 
       - name: Install system dependencies (Ubuntu)
         if: runner.os == 'Linux'
@@ -66,14 +63,11 @@ jobs:
           brew install tesseract poppler
 
       - name: Install Python dependencies
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install pytest pytest-cov pytest-mock
-          pip install -e .
+        run: uv sync --extra dev
 
       - name: Run tests
         run: |
-          pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=term
+          uv run pytest tests/unit/ -v --cov=src --cov-report=xml --cov-report=term
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4
@@ -104,25 +98,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        run: uv python install 3.11
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install bandit semgrep
-          pip install -e .
+        run: uv sync --extra dev
 
       - name: Run Bandit (Python security)
         run: |
-          bandit -r src/ -f json -o bandit-report.json || true
-          bandit -r src/ -f screen
+          uv run bandit -r src/ -f json -o bandit-report.json || true
+          uv run bandit -r src/ -f screen
 
       - name: Run Semgrep (AI/ML rules)
         run: |
-          semgrep --config=auto \
+          uv run semgrep --config=auto \
                   --config="p/python" \
                   --config="p/security-audit" \
                   --config="p/secrets" \
@@ -143,24 +135,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        run: uv python install 3.11
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install safety pip-audit
-          pip install -e .
+        run: uv sync --extra dev
 
       - name: Safety Check (PyPI vulnerabilities)
         run: |
-          safety check --json --output safety-report.json || true
-          safety check
+          uv run safety check --json --output safety-report.json || true
+          uv run safety check
 
       - name: Pip-audit Check
-        run: pip-audit --desc --format json --output pip-audit.json
+        run: uv run pip-audit --desc --format json --output pip-audit.json
         continue-on-error: true
 
       - name: Snyk Security Scan
@@ -209,27 +199,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        run: uv python install 3.11
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install pip-licenses licensecheck
-          pip install -e .
+        run: uv sync --extra dev
 
       - name: Check Licenses
         run: |
-          pip-licenses --format=json --output-file=licenses.json
-          pip-licenses --format=markdown --output-file=licenses.md
+          uv run pip-licenses --format=json --output-file=licenses.json
+          uv run pip-licenses --format=markdown --output-file=licenses.md
           echo "## License Summary" >> $GITHUB_STEP_SUMMARY
           cat licenses.md >> $GITHUB_STEP_SUMMARY
 
       - name: Verify License Compatibility
         run: |
-          pip-licenses --fail-on="GPL;AGPL;LGPL" --format=plain
+          uv run pip-licenses --fail-on="GPL;AGPL;LGPL" --format=plain
 
       - name: Upload license report
         uses: actions/upload-artifact@v4
@@ -307,21 +295,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        run: uv python install 3.11
 
       - name: Install build tools
-        run: |
-          pip install --upgrade "pip>=25.3"
-          pip install build twine
+        run: uv sync --extra dev
 
       - name: Build package
-        run: python -m build
+        run: uv run python -m build
 
       - name: Check package with twine
-        run: twine check dist/*
+        run: uv run twine check dist/*
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

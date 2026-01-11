@@ -10,7 +10,7 @@
 *   **Document Processing:** LangChain, Unstructured, PyMuPDF, PDFPlumber
 *   **OCR Engines:** EasyOCR (primary), PaddleOCR, Tesseract, Qwen-VL (advanced)
 *   **Vector Store:** Qdrant
-*   **Build/Dependency Management:** Poetry (dev), Setuptools (packaging)
+*   **Build/Dependency Management:** uv (dev), Setuptools (packaging)
 
 ## Architecture
 
@@ -36,7 +36,7 @@ The system is designed around an **Intelligent Document Orchestrator** that rout
 
 ### Installation (Development)
 
-The project uses `poetry` for development dependency management and `make` for task automation.
+The project uses `uv` for development dependency management and `make` for task automation.
 
 ```bash
 # Install development dependencies
@@ -48,7 +48,7 @@ make pre-commit-install
 
 ### Running the CLI
 
-You can run the CLI via `poetry` or directly if installed in the environment.
+You can run the CLI via `uv run` or directly if installed in the environment.
 
 ```bash
 # Check version

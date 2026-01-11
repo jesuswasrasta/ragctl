@@ -77,11 +77,10 @@ git
 
 cd ragctl
 
-# Create a virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+# Install uv (if not installed)
+# See https://docs.astral.sh/uv/getting-started/installation/
 
-# Install development dependencies
+# Install development dependencies (creates .venv automatically)
 make install-dev
 
 # Install pre-commit hooks
