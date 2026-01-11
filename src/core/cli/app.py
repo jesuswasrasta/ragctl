@@ -295,7 +295,7 @@ def eval(
         )
 
         # Only add to list if chunking succeeded and file was created
-        if result != 0 and temp_file.exists():
+        if result == 0 and temp_file.exists():
             temp_files.append(temp_file)
 
     # Handle case where no chunks were created (empty file)

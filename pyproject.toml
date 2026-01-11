@@ -141,13 +141,15 @@ src = ["py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-python_files = ["test_*.py"]
+python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = [
+    "--verbose",
     "--strict-markers",
     "--strict-config",
     "--showlocals",
+    "--tb=short",
     "-ra",
     "--cov=src/core",
     "--cov-report=term-missing",
@@ -157,12 +159,26 @@ addopts = [
     "--cov-fail-under=17",
 ]
 markers = [
-    "unit: Unit tests",
-    "integration: Integration tests",
+    "unit: Unit tests (fast, no external dependencies)",
+    "integration: Integration tests (requires services)",
     "e2e: End-to-end tests",
-    "slow: Slow tests",
+    "slow: Slow tests (long running)",
     "requires_gpu: Tests requiring GPU",
     "requires_ollama: Tests requiring Ollama",
+    "api: API endpoint tests",
+    "chunking: Chunking functionality tests",
+    "vector: Vector database tests",
+    "cache: Cache tests",
+]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::FutureWarning",
 ]
 
 [tool.coverage.run]

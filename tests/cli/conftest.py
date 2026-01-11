@@ -68,10 +68,18 @@ class RealCliRunner:
             )
 
 
+from typer.testing import CliRunner
+
 @pytest.fixture
 def cli_runner():
     """Provide a real CLI test runner using subprocess."""
     return RealCliRunner()
+
+
+@pytest.fixture
+def mock_cli_runner():
+    """Provide a Typer CliRunner for in-process testing with mocks."""
+    return CliRunner()
 
 
 @pytest.fixture
